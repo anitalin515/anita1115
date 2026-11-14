@@ -26,6 +26,7 @@ import {
 } from './data/cards';
 import { MemoryCard } from './components/MemoryCard';
 import { soundEngine } from './utils/sound';
+import titleKeyartUrl from './assets/images/memory_tabletop_keyart_1794673681294.jpg';
 
 type GameState = 'TITLE_MENU' | 'PLAYING' | 'PAUSED' | 'ROUND_SUMMARY' | 'GAME_OVER';
 
@@ -46,7 +47,7 @@ const BEST_TIME_STORAGE_KEY = 'flip_memory_3rounds_v2_best_ms';
 const LEADERBOARD_STORAGE_KEY = 'flip_memory_3rounds_leaderboard_v1';
 const LAST_NAME_STORAGE_KEY = 'flip_memory_last_challenger_name';
 const CHALLENGER_NAME_REGEX = /^[\u4e00-\u9fff\u3400-\u4dbfA-Za-z0-9]+$/;
-const TITLE_KEYART_URL = '/src/assets/images/memory_tabletop_keyart_1794673681294.jpg';
+const TITLE_KEYART_URL = titleKeyartUrl;
 
 function loadBestTime(): number | null {
   try {
