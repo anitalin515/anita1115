@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  deployments: write
 
 concurrency:
   group: pages
@@ -54,6 +55,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v7
@@ -62,6 +66,7 @@ jobs:
           path: dist
 
       - name: Deploy to gh-pages branch
+        id: deployment
         run: |
           touch dist/.nojekyll
           cd dist
@@ -71,3 +76,8 @@ jobs:
           git add -A
           git commit -m "Deploy to GitHub Pages"
           git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
+          if [ "${{ github.event.repository.name }}" = "${{ github.repository_owner }}.github.io" ]; then
+            echo "page_url=https://${{ github.repository_owner }}.github.io/" >> "$GITHUB_OUTPUT"
+          else
+            echo "page_url=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> "$GITHUB_OUTPUT"
+          fi
